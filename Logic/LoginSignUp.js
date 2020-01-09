@@ -81,7 +81,15 @@ exports.login = function(req, res) {
     return;
   }
   db.user
-    .findOne({ where: { empId: req.body.empId } })
+    .findOne({
+      where: { empId: req.body.empId },
+      include: {
+        model: db.attendance,
+        where: {
+          date: getDateWithoutTime(new Date())
+        }
+      }
+    })
     .then(user => {
       if (user == null) {
         res.json({ message: "no record", data: null });
