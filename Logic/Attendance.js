@@ -76,23 +76,30 @@ exports.getAllAttendance = function(req, res) {
 };
 
 exports.makeHoliday = function(req, res, date) {
-  db.attendance
-    .update(
-      {
-        isHoliday: true
-      },
-      {
-        where: {
-          date: getDateWithoutTime(Date.parse(date))
+  const empId = req.decoded.empId;
+  db.user.findOne({ where: { empId: empId } }).then(user => {
+    if (!user.isAdmin) {
+      res.send({ message: "no access", data: null });
+      return;
+    }
+    db.attendance
+      .update(
+        {
+          isHoliday: true
+        },
+        {
+          where: {
+            date: getDateWithoutTime(Date.parse(date))
+          }
         }
-      }
-    )
-    .then(updated => {
-      res.send({ message: "success", data: updated });
-    })
-    .catch(err => {
-      res.send({ message: "error", data: null });
-    });
+      )
+      .then(updated => {
+        res.send({ message: "success", data: updated });
+      })
+      .catch(err => {
+        res.send({ message: "error", data: null });
+      });
+  });
 };
 
 function getDateWithoutTime(date) {
