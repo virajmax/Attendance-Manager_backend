@@ -31,7 +31,6 @@ exports.signUp = function(req, res) {
       }
     })
     .then(user => {
-      console.log(user);
       if (user == null) {
         res.send({ message: "no record", data: null });
         return;
