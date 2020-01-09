@@ -14,12 +14,14 @@ var databaseProduction = {
   database: "zcp6b4onvb"
 };
 
+var currentDatabase = databaseProduction;
+
 const sequelize = new Sequelize(
-  databaseTesting.database,
-  databaseTesting.user,
-  databaseTesting.password,
+  currentDatabase.database,
+  currentDatabase.user,
+  currentDatabase.password,
   {
-    host: databaseTesting.host,
+    host: currentDatabase.host,
     dialect: "mysql",
     pool: {
       max: 5,
