@@ -6,7 +6,6 @@ const joiValidation = require("./JoiValidation");
 const conf = require("../Config/config");
 
 exports.signUp = function(req, res) {
-  console.log(req.body);
   const schema = {
     empId: Joi.string().required(),
     nic: Joi.string().required(),
