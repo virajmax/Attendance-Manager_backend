@@ -39,28 +39,59 @@ exports.resetAtMidNight = function() {
 };
 
 exports.getAttendanceByDate = function(req, res, date) {
-  db.attendance
+  db.user
     .findAll({
-      where: { date: getDateWithoutTime(date) },
-      include: [db.user]
+      where: {
+        isRegistered: true
+      },
+      include: {
+        model: db.attendance,
+        where: {
+          date: getDateWithoutTime(date)
+        }
+      }
     })
     .then(result => {
-      res.send(result);
+      res.send({ message: "success", data: result });
+    })
+    .catch(err => {
+      res.send({ message: "error", data: null });
     });
 };
 
-exports.getAttendanceByDateRange = function(req, res, from, to) {
-  db.attendance
+exports.getAllAttendance = function(req, res) {
+  db.user
     .findAll({
       where: {
-        date: {
-          $between: [Date.parse(from), Date.parse(to)]
-        }
+        isRegistered: true
       },
-      include: [db.user]
+      include: [db.attendance]
     })
     .then(result => {
-      res.send(result);
+      res.send({ message: "success", data: result });
+    })
+    .catch(err => {
+      res.send({ message: "error", data: null });
+    });
+};
+
+exports.makeHoliday = function(req, res, date) {
+  db.attendance
+    .update(
+      {
+        isHoliday: true
+      },
+      {
+        where: {
+          date: getDateWithoutTime(Date.parse(date))
+        }
+      }
+    )
+    .then(updated => {
+      res.send({ message: "success", data: updated });
+    })
+    .catch(err => {
+      res.send({ message: "error", data: null });
     });
 };
 
