@@ -7,6 +7,7 @@ router.post('/',(req,res)=>{
 })
 
 router.post('/register',(req,res)=>{
+    console.log(req.body)
     user.registerUser(req,res);
 })
 

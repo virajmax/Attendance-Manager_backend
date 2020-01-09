@@ -11,8 +11,9 @@ exports.registerUser = function(req, res) {
     return;
   }
 
-  const empId = req.decoded.empId;
-  db.user.findOne({ where: { empId: empId } }).then(user => {
+  const decodedEmpId = req.decoded.empId;
+  
+  db.user.findOne({ where: { empId: decodedEmpId } }).then(user => {
     if (!user.isAdmin) {
       res.send({ message: "no access", data: null });
       return;
