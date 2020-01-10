@@ -26,4 +26,5 @@ shedule.scheduleJob("0 1 0 * * *", () => {
 
 app.listen(port, () => {
   console.log(`Server running at port ` + port);
+  console.log(Date().toString());
 });

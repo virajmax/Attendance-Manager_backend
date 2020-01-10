@@ -70,6 +70,7 @@ exports.signUp = function(req, res) {
 };
 
 exports.login = function(req, res) {
+  console.log(req.body);
   const schema = {
     empId: Joi.string().required(),
     password: Joi.string()
