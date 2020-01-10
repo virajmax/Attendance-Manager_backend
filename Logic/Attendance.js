@@ -92,7 +92,9 @@ exports.makeHoliday = function(req, res, date) {
         date: getDateWithoutTime(Date.parse(date))
       })
       .then(hol => {
-        if (getDateWithoutTime(Date.parse(date)) != getDateWithoutTime(new Date())) {
+        if (
+          getDateWithoutTime(Date.parse(date)) != getDateWithoutTime(new Date())
+        ) {
           res.send({ message: "success", data: updated });
           return;
         }
@@ -111,10 +113,14 @@ exports.makeHoliday = function(req, res, date) {
             res.send({ message: "success", data: updated });
           })
           .catch(err => {
+            console.log("error 1");
+            console.log(err);
             res.send({ message: "error", data: null });
           });
       })
       .catch(err => {
+        console.log("error 2");
+        console.log(err);
         res.send({ message: "error", data: null });
       });
   });
