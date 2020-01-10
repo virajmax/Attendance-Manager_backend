@@ -95,7 +95,7 @@ exports.makeHoliday = function(req, res, date) {
         if (
           getDateWithoutTime(Date.parse(date)) != getDateWithoutTime(new Date())
         ) {
-          res.send({ message: "success", data: updated });
+          res.send({ message: "success", data: null });
           return;
         }
         db.attendance
