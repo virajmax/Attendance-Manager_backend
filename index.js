@@ -20,11 +20,24 @@ app.get("/", (req, res) => {
 app.use("/", routeLoginSignUp);
 app.use("/api", middleware.checkToken, api);
 
-shedule.scheduleJob("0 1 0 * * *", () => {
-  attendance.resetAtMidNight();
-});
+// shedule.scheduleJob("0 1 0 * * *", () => {
+//   attendance.resetAtMidNight();
+// });
+var previousDate;
+var currentDate;
+
+const interval = setInterval(function() {
+  console.log("checking time");
+  currentDate = new Date().getDate();
+  if(previousDate != currentDate){
+    attendance.resetAtMidNight();
+  }
+  previousDate = currentDate;
+}, 300000);
 
 app.listen(port, () => {
   console.log(`Server running at port ` + port);
   console.log(Date().toString());
+  previousDate = new Date().getDate();
+  attendance.resetAtMidNight();
 });
