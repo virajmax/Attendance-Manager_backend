@@ -26,15 +26,20 @@ exports.resetAtMidNight = function() {
   db.user
     .findAll({ attributes: ["id"], where: { isRegistered: true } })
     .then(idNumbers => {
-      var attendanceData = [];
-      idNumbers.forEach(number => {
-        attendanceData.push({
-          date: getDateWithoutTime(new Date()),
-          uid: number.id,
-          isPresent: false
+      db.holiday
+        .findAll({ where: { date: getDateWithoutTime(new Date()) } })
+        .then(holidays => {
+          var attendanceData = [];
+          idNumbers.forEach(number => {
+            attendanceData.push({
+              date: getDateWithoutTime(new Date()),
+              uid: number.id,
+              isPresent: false,
+              isHoliday: holidays.length > 0
+            });
+          });
+          db.attendance.bulkCreate(attendanceData);
         });
-      });
-      db.attendance.bulkCreate(attendanceData);
     });
 };
 
@@ -82,19 +87,32 @@ exports.makeHoliday = function(req, res, date) {
       res.send({ message: "no access", data: null });
       return;
     }
-    db.attendance
-      .update(
-        {
-          isHoliday: true
-        },
-        {
-          where: {
-            date: getDateWithoutTime(Date.parse(date))
-          }
+    db.holiday
+      .create({
+        date: getDateWithoutTime(date)
+      })
+      .then(hol => {
+        if (getDateWithoutTime(date) != getDateWithoutTime(new Date())) {
+          res.send({ message: "success", data: updated });
+          return;
         }
-      )
-      .then(updated => {
-        res.send({ message: "success", data: updated });
+        db.attendance
+          .update(
+            {
+              isHoliday: true
+            },
+            {
+              where: {
+                date: getDateWithoutTime(Date.parse(date))
+              }
+            }
+          )
+          .then(updated => {
+            res.send({ message: "success", data: updated });
+          })
+          .catch(err => {
+            res.send({ message: "error", data: null });
+          });
       })
       .catch(err => {
         res.send({ message: "error", data: null });

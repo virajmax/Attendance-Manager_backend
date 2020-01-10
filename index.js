@@ -5,7 +5,6 @@ const port = process.env.PORT || 3000;
 const routeLoginSignUp = require("./Api/LoginSignUp");
 const api = require("./Api/Api.js");
 const middleware = require("./Config/middleware");
-const shedule = require("node-schedule");
 const attendance = require("./Logic/Attendance");
 
 app.use(express.json());
@@ -20,9 +19,6 @@ app.get("/", (req, res) => {
 app.use("/", routeLoginSignUp);
 app.use("/api", middleware.checkToken, api);
 
-// shedule.scheduleJob("0 1 0 * * *", () => {
-//   attendance.resetAtMidNight();
-// });
 var previousDate;
 var currentDate;
 

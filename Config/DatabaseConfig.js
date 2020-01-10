@@ -50,6 +50,7 @@ db.sequelize = sequelize;
 
 db.user = require("../Model/User")(sequelize, Sequelize);
 db.attendance = require("../Model/Attendance")(sequelize, Sequelize);
+db.holiday = require("../Model/Holiday")(sequelize, Sequelize);
 
 db.user.hasMany(db.attendance, {
   foreignKey: {

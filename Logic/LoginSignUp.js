@@ -48,14 +48,21 @@ exports.signUp = function(req, res) {
             { where: { id: user.id } }
           )
           .then(user2 => {
-            db.attendance
-              .create({
-                date: getDateWithoutTime(new Date()),
-                isPresent: false,
-                uid: user.id
+            db.holiday
+              .findAll({
+                where: { date: getDateWithoutTime(new Date()) }
               })
-              .then(createdAttendance => {
-                res.send({ message: "success", data: user2 });
+              .then(holidays => {
+                db.attendance
+                  .create({
+                    date: getDateWithoutTime(new Date()),
+                    isPresent: false,
+                    uid: user.id,
+                    isHoliday: holidays.length > 0
+                  })
+                  .then(createdAttendance => {
+                    res.send({ message: "success", data: user2 });
+                  });
               });
           })
           .catch(err => {
