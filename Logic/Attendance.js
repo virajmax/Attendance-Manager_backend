@@ -52,7 +52,7 @@ exports.getAttendanceByDate = function(req, res, date) {
       include: {
         model: db.attendance,
         where: {
-          date: getDateWithoutTime(date)
+          date: getDateWithoutTime(Date.parse(date))
         }
       }
     })
@@ -89,10 +89,10 @@ exports.makeHoliday = function(req, res, date) {
     }
     db.holiday
       .create({
-        date: getDateWithoutTime(date)
+        date: getDateWithoutTime(Date.parse(date))
       })
       .then(hol => {
-        if (getDateWithoutTime(date) != getDateWithoutTime(new Date())) {
+        if (getDateWithoutTime(Date.parse(date)) != getDateWithoutTime(new Date())) {
           res.send({ message: "success", data: updated });
           return;
         }
