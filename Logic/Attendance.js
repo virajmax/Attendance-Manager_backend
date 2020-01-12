@@ -95,11 +95,27 @@ exports.makeHoliday = function(req, res, date) {
         res.send({ message: "success", data: null });
       })
       .catch(err => {
-        console.log("error 2");
         console.log(err);
         res.send({ message: "error", data: null });
       });
   });
+};
+
+exports.getHolidays = function(req, res) {
+  db.holiday
+    .findAll({
+      where: {
+        date: {
+          [Op.gte]: getDateWithoutTime(new Date())
+        }
+      }
+    })
+    .then(holidays => {
+      res.send({message:'success',data:holidays});
+    }).catch(err => {
+      console.log(err);
+      res.send({ message: "error", data: null });
+    });
 };
 
 function getDateWithoutTime(date) {

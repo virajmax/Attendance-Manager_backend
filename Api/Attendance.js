@@ -22,4 +22,9 @@ router.put("/makeholiday/:date", (req, res) => {
   attendance.makeHoliday(req, res, req.params.date);
 });
 
+router.get("/holidays", (req, res) => {
+  console.log("handling get holidays");
+  attendance.getHolidays(req, res);
+});
+
 module.exports = router;
