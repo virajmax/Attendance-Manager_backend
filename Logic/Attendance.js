@@ -1,6 +1,8 @@
 const db = require("../Config/DatabaseConfig");
 const Joi = require("joi");
 const joiValidation = require("./JoiValidation");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.mark = function(req, res) {
   var id = req.params.id;
