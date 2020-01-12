@@ -110,7 +110,10 @@ exports.getHolidays = function(req, res) {
         date: {
           [Op.gte]: getDateWithoutTime(new Date())
         }
-      }
+      },
+      order: [
+        ['date', 'ASC'],
+    ],
     })
     .then(holidays => {
       res.send({message:'success',data:holidays});
