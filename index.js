@@ -35,4 +35,5 @@ app.listen(port, () => {
   console.log(`Server running at port ` + port);
   console.log(Date().toString());
   previousDate = new Date().getDate();
+  attendance.resetAtMidNight();
 });
