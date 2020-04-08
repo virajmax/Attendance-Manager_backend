@@ -32,6 +32,7 @@ const interval = setInterval(function() {
 }, 300000);
 
 app.listen(port, () => {
+  attendance.resetAtMidNight();
   console.log(`Server running at port ` + port);
   console.log(Date().toString());
   previousDate = new Date().getDate();
